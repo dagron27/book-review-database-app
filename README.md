@@ -1,6 +1,6 @@
 # Book Review Database App
 
-![CI](https://github.com/dagron27/csci-411-assignment2/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/dagron27/book-review-database-app/actions/workflows/ci.yml/badge.svg)
 
 **Course:** `CSCI 411, Database Theory and Design, Fall 2025`
 
