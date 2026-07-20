@@ -1,0 +1,21 @@
+# Python virtual environment / bytecode
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Environment variables
+.env
+
+# Editor / IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Committed SQLite binaries (never re-add; see README "Known Issues")
+db/sqlite3.exe
+db/sqldiff.exe
+db/sqlite3_analyzer.exe

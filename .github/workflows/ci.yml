@@ -1,0 +1,75 @@
+name: CI
+
+# Run on every push (all branches, no filter) and allow manual runs from the
+# Actions tab.
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build-and-smoke-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out the repository so the workflow has access to src/app.py,
+      # requirements.txt, and the data/books.db seed database.
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      # Install Python. requirements.txt was re-saved as plain UTF-8 (it was
+      # previously UTF-16LE, which broke some pip/CI parsers), so a standard
+      # setup-python + pip install works here.
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      # Install the app's runtime dependencies from requirements.txt.
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Byte-compile app.py as a fast syntax/import sanity check before
+      # trying to actually run the server.
+      - name: Compile check app.py
+        run: python -m py_compile src/app.py
+
+      # Confirm the committed SQLite database is present. The app reads
+      # from data/books.db (see README "Environment Setup"); it is checked
+      # into the repo and is not covered by .gitignore, so it should exist
+      # in the checkout.
+      - name: Verify seed database is present
+        run: |
+          if [ ! -f data/books.db ]; then
+            echo "data/books.db is missing from the checkout" >&2
+            exit 1
+          fi
+          ls -la data/books.db
+
+      # Start the Flask dev server in the background (per README:
+      # `python src/app.py` runs it on 127.0.0.1:5000) and give it a moment
+      # to come up before hitting it with requests. Run from the repo root
+      # (not `cd src`) so app.py's `DATABASE = 'data/books.db'` resolves
+      # correctly; Flask's own template/static discovery is independent of
+      # the working directory (it follows app.py's own file location).
+      - name: Start Flask app
+        run: |
+          python src/app.py &
+          echo $! > app.pid
+          sleep 3
+
+      # Hit the root page and the /api/books endpoint (the two real routes
+      # defined in app.py) and fail the job if either does not respond
+      # successfully.
+      - name: Smoke test HTTP routes
+        run: |
+          curl -f http://127.0.0.1:5000/
+          curl -f http://127.0.0.1:5000/api/books
+
+      # Always stop the background Flask process, even if the smoke test
+      # step above failed, so the job cleans up after itself.
+      - name: Stop Flask app
+        if: always()
+        run: |
+          if [ -f app.pid ]; then
+            kill "$(cat app.pid)" || true
+          fi

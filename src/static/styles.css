@@ -1,0 +1,74 @@
+/* Container for user account details and book information */
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #d8c9ab; /* Beige */
+}
+
+/* Style for the top container */
+h1 {
+    border: 3px solid black; /* Thicker black border */
+    padding: 10px 80px; /* Add padding for better visibility */
+    background-color: #fffaf0; /* Floral White */
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    /*padding: 10px; /* Add padding for better visibility */
+}
+
+/* Style for user account details */
+.user {
+    flex: 1;
+    margin-right: 10px; /* Adjust the margin as needed */
+    margin-left: 20px; /* Adjust the margin as needed */
+    border: 3px solid black; /* Thicker black border */
+    padding: 30px; /* Add padding for better visibility */
+    background-color: #c1e0fc;
+    min-width: 30%; /* Set a minimum width */
+    min-height: 800px; /* Set a minimum height */
+    max-width: 45%; /* Set a maximum width */
+    max-height: auto; /* Allow height to adjust dynamically */
+}
+
+/* Style for book information */
+.book {
+    flex: 1;
+    margin-right: 20px; /* Adjust the margin as needed */
+    margin-left: 10px; /* Adjust the margin as needed */
+    border: 3px solid black; /* Thicker black border */
+    padding: 30px; /* Add padding for better visibility */
+    background-color: #c1e0fc;
+    min-width: 30%; /* Set a minimum width */
+    min-height: 800px; /* Set a minimum height */
+    max-width: 45%; /* Set a maximum width */
+    max-height: auto; /* Allow height to adjust dynamically */
+}
+
+/* Style for the book container */
+.book-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Space between book items */
+    justify-content: center; /* Center the items horizontally */
+    align-items: flex-start; /* Align items to the top */
+}
+
+/* Style for individual book items */
+.book-item {
+    margin: 20px; /* Adjust the margin as needed */
+    border: 1px solid #000; /* Black border */
+    padding: 10px; /* Add padding */
+    background-color: #fff; /* White background */
+    width: 200px; /* Fixed width */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    flex-grow: 1; /* Allow items to grow to fill the container */
+}
+
+/* Add styles for the button */
+#showBooksButton {
+    margin: 20px; /* Adjust the margin as needed */
+}
